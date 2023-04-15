@@ -1,4 +1,4 @@
-package com.nhnacademy.edu.springframework.project.service;
+package com.nhnacademy.edu.springframework.project.repository;
 
 import com.nhnacademy.edu.springframework.project.repository.Score;
 
@@ -27,5 +27,13 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", score=" + score +
                 '}'+ '\n';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSeq() {
+        return seq;
     }
 }
