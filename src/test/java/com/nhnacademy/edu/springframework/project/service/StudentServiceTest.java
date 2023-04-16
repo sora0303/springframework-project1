@@ -1,9 +1,8 @@
 package com.nhnacademy.edu.springframework.project.service;
 
-import com.nhnacademy.edu.springframework.project.repository.CsvScores;
+import com.nhnacademy.edu.springframework.project.AppConfig;
 import com.nhnacademy.edu.springframework.project.repository.CsvStudents;
 import com.nhnacademy.edu.springframework.project.repository.Score;
-import com.nhnacademy.edu.springframework.project.repository.Scores;
 import com.nhnacademy.edu.springframework.project.repository.Student;
 import com.nhnacademy.edu.springframework.project.repository.Students;
 import java.lang.reflect.Field;
@@ -13,19 +12,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentServiceTest {
 
-    private final Students csvStudents = CsvStudents.getInstance();
+    private final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    private final Students csvStudents = applicationContext.getBean(CsvStudents.class);
     private final Field fieldStudent = ReflectionUtils.findField(CsvStudents.class, "studentsMap");
     private StudentService studentService;
 
     @BeforeEach
     void setup() {
-        studentService = new DefaultStudentService();
+        studentService = applicationContext.getBean(DefaultStudentService.class);
         ReflectionUtils.makeAccessible(fieldStudent);
 
         Map<Integer, Student> testStudensMap = new HashMap<>();

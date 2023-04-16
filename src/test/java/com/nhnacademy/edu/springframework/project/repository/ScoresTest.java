@@ -1,12 +1,13 @@
 package com.nhnacademy.edu.springframework.project.repository;
 
-import java.io.File;
+import com.nhnacademy.edu.springframework.project.AppConfig;
 import java.lang.reflect.Field;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 
@@ -14,13 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ScoresTest {
 
-    private Scores csvScores;
-    private Field field;
+    private final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    private final Scores csvScores = applicationContext.getBean(CsvScores.class);
+    private final Field field = ReflectionUtils.findField(CsvScores.class, "scoreList");
 
     @BeforeEach
     void setUp(){
-        csvScores = CsvScores.getInstance();
-        field = ReflectionUtils.findField(CsvScores.class, "scoreList");
         ReflectionUtils.makeAccessible(field);
     }
 

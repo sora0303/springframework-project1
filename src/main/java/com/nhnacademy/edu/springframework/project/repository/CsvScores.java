@@ -8,27 +8,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class CsvScores implements Scores {
 
-    private List<Score> scoreList;
-
-    private CsvScores() {
-        scoreList = new ArrayList<>();
-    }
-
-    private static class CsvScoresSingleton {
-        public static final CsvScores INSTANCE = new CsvScores();
-    }
-
-    public static Scores getInstance() {
-        return CsvScoresSingleton.INSTANCE;
-    }
+    private List<Score> scoreList = new ArrayList<>();
 
     @Override
     public void load() {
-        scoreList.clear();
+        if(!scoreList.isEmpty()){
+            scoreList.clear();
+        }
         String resourceName = "data" + File.separator + "score.csv";
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(resourceName).getFile());

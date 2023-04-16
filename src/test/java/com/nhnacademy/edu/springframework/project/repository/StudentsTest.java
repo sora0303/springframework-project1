@@ -1,5 +1,6 @@
 package com.nhnacademy.edu.springframework.project.repository;
 
+import com.nhnacademy.edu.springframework.project.AppConfig;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,15 +9,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentsTest {
 
-    private final Students csvStudents = CsvStudents.getInstance();
-    private final Scores csvScores = CsvScores.getInstance();
-
+    private final ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+    private final Students csvStudents = applicationContext.getBean(CsvStudents.class);
+    private final Scores csvScores = applicationContext.getBean(CsvScores.class);
     private final Field fieldScore = ReflectionUtils.findField(CsvScores.class, "scoreList");
     private final Field fieldStudent = ReflectionUtils.findField(CsvStudents.class, "studentsMap");
 

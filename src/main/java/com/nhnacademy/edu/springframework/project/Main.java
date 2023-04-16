@@ -6,15 +6,18 @@ import com.nhnacademy.edu.springframework.project.service.DefaultStudentService;
 import com.nhnacademy.edu.springframework.project.repository.Student;
 
 import java.util.Collection;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
 
-    // TODO 9 - 성공적으로 실행되어야 합니다.
     public static void main(String[] args) {
-        DataLoadService dataLoadService = new CsvDataLoadService();
+
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        DataLoadService dataLoadService = applicationContext.getBean(CsvDataLoadService.class);
         dataLoadService.loadAndMerge();
 
-        DefaultStudentService studentService = new DefaultStudentService();
+        DefaultStudentService studentService = applicationContext.getBean(DefaultStudentService.class);
         Collection<Student> passedStudents = studentService.getPassedStudents();
         System.out.println(passedStudents);
 

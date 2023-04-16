@@ -7,37 +7,25 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class CsvStudents implements Students {
 
-    Map<Integer, Student> studentsMap;
-
-    private CsvStudents() {
-        studentsMap = new ConcurrentHashMap<>();
-    }
-
-    ;
-
-    private static class CsvStudentsSingleton {
-        private static final CsvStudents INSTANCE = new CsvStudents();
-    }
-
-    public static Students getInstance() {
-        return CsvStudentsSingleton.INSTANCE;
-    }
+    Map<Integer, Student> studentsMap = new HashMap<>();
 
     @Override
     public void load() {
-        studentsMap.clear();
+        if(!studentsMap.isEmpty()){
+            studentsMap.clear();
+        }
         String resourceName = "data" + File.separator + "student.csv";
-        System.out.println(resourceName);
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(resourceName).getFile());
         String absolutePath = file.getAbsolutePath();
-        System.out.println(absolutePath);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line = "";
